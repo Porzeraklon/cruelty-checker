@@ -5,27 +5,11 @@ const readerDiv = document.getElementById('reader');
 const resultCard = document.getElementById('result-card');
 const resultText = document.getElementById('result-text');
 
-async function fetchStats() {
-    try {
-        const response = await fetch('/api/stats');
-        if (!response.ok) throw new Error('Błąd sieci');
-        
-        const data = await response.json();
-        
-        document.getElementById('true-count').textContent = data.true_count;
-        document.getElementById('false-count').textContent = data.false_count;
-        document.getElementById('stats-banner').classList.remove('hidden');
-    } catch (error) {
-        console.error('Nie udało się pobrać statystyk:', error);
-    }
-}
-
-document.addEventListener('DOMContentLoaded', fetchStats);
-
 async function checkCrueltyFree(barcode) {
     resultCard.style.display = "block";
+    // Czyścimy klasy statusów przed nowym wyszukiwaniem
+    resultCard.className = "";
     resultText.innerText = `Wykryto kod: ${barcode}\nSprawdzanie w bazie...`;
-    resultText.style.color = "#333";
 
     try {
         const response = await fetch(`/api/product/${barcode}`);
@@ -33,31 +17,24 @@ async function checkCrueltyFree(barcode) {
         if (!response.ok) throw new Error(`Błąd HTTP: ${response.status}`);
         const data = await response.json();
         
-        let productHeader = "";
-        if (data.brand && data.brand !== "Nieznana") {
-            productHeader = `Marka: ${data.brand}\n`;
-            if (data.product_name) {
-                productHeader += `„${data.product_name}”\n\n`;
-            }
-        }
+        let brandText = (data.brand && data.brand !== "Nieznana") ? data.brand : "";
 
         if (data.cruelty_free === true) {
-            resultText.innerText = `${productHeader}🐇 Wolne od okrucieństwa!`;
-            resultText.style.color = "#16a34a";
+            resultCard.classList.add("status-cruelty-free");
+            resultText.innerText = brandText ? `Marka: ${brandText}\n\nCruelty free` : `Cruelty free`;
         } else if (data.cruelty_free === false) {
-            resultText.innerText = `${productHeader}🧪 Testuje na zwierzętach`;
-            resultText.style.color = "#dc2626";
-        } else if (data.brand && data.brand !== "Nieznana") {
-            resultText.innerText = `${productHeader}❓ Brak danych o testowaniu tej marki w naszej bazie.`;
-            resultText.style.color = "#d97706";
+            resultCard.classList.add("status-testing");
+            resultText.innerText = brandText ? `Marka: ${brandText}\n\nTestuje na zwierzętach` : `Testuje na zwierzętach`;
+        } else if (brandText) {
+            // Sytuacja, gdy marka jest znana, ale brakuje danych o statusie w API
+            resultText.innerText = `Marka: ${brandText}\n\nBrak danych o testowaniu`;
         } else {
-            resultText.innerText = `Kod: ${barcode}\nNie znaleziono produktu w bazie Open Beauty/Food Facts.`;
-            resultText.style.color = "#4b5563";
+            resultText.innerText = `Kod: ${barcode}\nNie znaleziono produktu w bazie\nOpen Beauty/Food Facts.`;
         }
     } catch (error) {
         console.error("Błąd API:", error);
+        resultCard.classList.add("status-testing"); // Używamy czerwonego koloru dla błędu
         resultText.innerText = "Błąd połączenia z serwerem API.\nSprawdź czy FastAPI działa.";
-        resultText.style.color = "#ea580c";
     }
 }
 
@@ -84,6 +61,7 @@ async function startScanner() {
     // 2. Pokazujemy element w DOM ZANIM zainicjalizujemy kamerę (wymóg WebView)
     resultCard.style.display = "none";
     readerDiv.style.display = "block";
+    resultCard.className = ""; // Reset klas przy restarcie
 
     // 3. Tworzymy świeżą instancję skanera
     html5QrCode = new Html5Qrcode("reader");
@@ -114,8 +92,8 @@ async function startScanner() {
         await stopAndClearScanner();
         resultCard.style.display = "block";
         readerDiv.style.display = "none";
+        resultCard.classList.add("status-testing"); // Czerwony kolor dla błędu
         resultText.innerText = "Błąd aparatu.\nUdziel aplikacji dostępu do kamery lub zrestartuj skanowanie.";
-        resultText.style.color = "#dc2626";
     });
 }
 

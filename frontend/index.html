@@ -2,29 +2,35 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Skaner Cruelty-Free</title>
     
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#2563eb">
+    <!-- Kolor zaktualizowany pod nowe tło (szarobeżowe) z makiet -->
+    <meta name="theme-color" content="#e5e5dc">
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2619/2619286.png">
 
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h2>Skaner giga Kosmetyków</h2>
-    
-    <div id="stats-banner" class="banner hidden">
-        Marki Cruelty-Free: <span id="true-count">0</span> | 
-        Marki testujące: <span id="false-count">0</span>
-    </div>
+    <header>
+        <h1>Skaner cruelty free</h1>
+    </header>
 
-    <div id="reader"></div>
+    <main>
+        <!-- Kontener kamery z różowym tłem zdefiniowanym w CSS -->
+        <div id="reader-container">
+            <div id="reader"></div>
+        </div>
 
-    <div id="result-card">
-        <div id="result-text">Trwa sprawdzanie...</div>
-        <button onclick="startScanner()">Skanuj kolejny produkt</button>
-    </div>
+        <!-- Karta wyników -->
+        <div id="result-card">
+            <div id="result-content">
+                <div id="result-text">Trwa sprawdzanie...</div>
+            </div>
+            <button class="primary-btn" onclick="startScanner()">Skanuj kolejny produkt</button>
+        </div>
+    </main>
 
     <script src="https://unpkg.com/html5-qrcode"></script>
     <script src="app.js"></script>
