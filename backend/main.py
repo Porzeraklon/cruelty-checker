@@ -175,3 +175,14 @@ def create_brand(brand: BrandCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_brand)
     return new_brand
+
+@app.get("/api/stats")
+def get_stats():
+    # Zakładając zmienną 'brands' z listą marek z pliku json lub bazy danych
+    cruelty_free_count = sum(1 for brand in brands if brand.get("cruelty_free") is True)
+    not_cruelty_free_count = sum(1 for brand in brands if brand.get("cruelty_free") is False)
+    
+    return {
+        "true_count": cruelty_free_count, 
+        "false_count": not_cruelty_free_count
+    }

@@ -54,3 +54,16 @@ button {
 button:hover { 
     background-color: #1d4ed8; 
 }
+
+.banner {
+    background-color: #2563eb;
+    color: #ffffff;
+    text-align: center;
+    padding: 12px;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.hidden {
+    display: none;
+}

@@ -5,6 +5,23 @@ const readerDiv = document.getElementById('reader');
 const resultCard = document.getElementById('result-card');
 const resultText = document.getElementById('result-text');
 
+async function fetchStats() {
+    try {
+        const response = await fetch('/api/stats');
+        if (!response.ok) throw new Error('Błąd sieci');
+        
+        const data = await response.json();
+        
+        document.getElementById('true-count').textContent = data.true_count;
+        document.getElementById('false-count').textContent = data.false_count;
+        document.getElementById('stats-banner').classList.remove('hidden');
+    } catch (error) {
+        console.error('Nie udało się pobrać statystyk:', error);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', fetchStats);
+
 async function checkCrueltyFree(barcode) {
     resultCard.style.display = "block";
     resultText.innerText = `Wykryto kod: ${barcode}\nSprawdzanie w bazie...`;
