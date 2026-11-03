@@ -1,0 +1,19 @@
+[
+  { "name": "Ziaja", "cruelty_free": true },
+  { "name": "Bielenda", "cruelty_free": true },
+  { "name": "Tołpa", "cruelty_free": true },
+  { "name": "Eveline Cosmetics", "cruelty_free": true },
+  { "name": "Inglot", "cruelty_free": true },
+  { "name": "Miya Cosmetics", "cruelty_free": true },
+  { "name": "Resibo", "cruelty_free": true },
+  { "name": "The Ordinary", "cruelty_free": true },
+  { "name": "Yope", "cruelty_free": true },
+  { "name": "Basiclab", "cruelty_free": true },
+  { "name": "L'Oreal", "cruelty_free": false },
+  { "name": "Cerave", "cruelty_free": false },
+  { "name": "Nivea", "cruelty_free": false },
+  { "name": "Garnier", "cruelty_free": false },
+  { "name": "Dove", "cruelty_free": false },
+  { "name": "Maybelline", "cruelty_free": false },
+  { "name": "Neutrogena", "cruelty_free": false }
+]

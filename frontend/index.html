@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Skaner Cruelty-Free</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2563eb">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2619/2619286.png">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h2>Skaner Kosmetyków</h2>
+    
+    <div id="reader"></div>
+
+    <div id="result-card">
+        <div id="result-text">Trwa sprawdzanie...</div>
+        <button onclick="startScanner()">Skanuj kolejny produkt</button>
+    </div>
+
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <script src="app.js"></script>
+    
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('PWA Service Worker zarejestrowany:', reg.scope))
+                    .catch(err => console.error('Błąd rejestracji PWA:', err));
+            });
+        }
+    </script>
+</body>
+</html>

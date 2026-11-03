@@ -1,0 +1,16 @@
+services:
+  backend:
+    build: ./backend
+    container_name: cruelty_backend
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    container_name: cruelty_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
