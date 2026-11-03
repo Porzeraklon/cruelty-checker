@@ -4,8 +4,8 @@
   "description": "Skanuj kody kreskowe i sprawdzaj status testowania na zwierzętach.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f4f4f9",
-  "theme_color": "#2563eb",
+  "background_color": "#e5e5dc",
+  "theme_color": "#e5e5dc",
   "icons": [
     {
       "src": "https://cdn-icons-png.flaticon.com/512/2619/2619286.png",

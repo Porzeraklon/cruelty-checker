@@ -1,6 +1,7 @@
 let html5QrCode = null;
 let isProcessing = false;
 
+const readerContainer = document.getElementById('reader-container');
 const readerDiv = document.getElementById('reader');
 const resultCard = document.getElementById('result-card');
 const resultText = document.getElementById('result-text');
@@ -58,9 +59,9 @@ async function startScanner() {
     // 1. Najpierw czyścimy ewentualny stary strumień i obiekty
     await stopAndClearScanner();
 
-    // 2. Pokazujemy element w DOM ZANIM zainicjalizujemy kamerę (wymóg WebView)
+    // 2. Pokazujemy CAŁY kontener w DOM ZANIM zainicjalizujemy kamerę
     resultCard.style.display = "none";
-    readerDiv.style.display = "block";
+    readerContainer.style.display = "block";
     resultCard.className = ""; // Reset klas przy restarcie
 
     // 3. Tworzymy świeżą instancję skanera
@@ -81,9 +82,9 @@ async function startScanner() {
             if (isProcessing) return;
             isProcessing = true;
 
-            // Po pomyślnym skanie całkowicie wyłączamy strumień i czyścimy DOM
+            // Po pomyślnym skanie całkowicie wyłączamy strumień i ukrywamy CAŁY kontener
             await stopAndClearScanner();
-            readerDiv.style.display = "none";
+            readerContainer.style.display = "none";
             checkCrueltyFree(decodedText);
         },
         (errorMessage) => {}
@@ -91,7 +92,8 @@ async function startScanner() {
         console.error("Błąd startu kamery:", err);
         await stopAndClearScanner();
         resultCard.style.display = "block";
-        readerDiv.style.display = "none";
+        // W razie błędu również ukrywamy CAŁY kontener
+        readerContainer.style.display = "none";
         resultCard.classList.add("status-testing"); // Czerwony kolor dla błędu
         resultText.innerText = "Błąd aparatu.\nUdziel aplikacji dostępu do kamery lub zrestartuj skanowanie.";
     });
