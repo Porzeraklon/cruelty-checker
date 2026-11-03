@@ -1,11 +1,11 @@
 :root {
-    --bg-color: #e5e5dc; /* Jasny szarobeżowy z obrazków */
-    --accent-green: #8a9a20; /* Oliwkowy pasek na górze/dole */
-    --btn-pink: #f29eab; /* Różowy przycisk */
-    --card-bg: #e2e2d9; /* Jasnoszara karta wyników */
-    --text-dark: #2a2d24; /* Ciemny tekst nagłówka i 'brak danych' */
-    --text-red: #d31a20; /* Czerwony tekst 'Testuje na zwierzętach' */
-    --text-green: #839121; /* Zielony tekst 'Cruelty free' */
+    --bg-color: #e5e5dc; 
+    --accent-green: #8a9a20; 
+    --btn-pink: #f29eab; 
+    --card-bg: #e2e2d9; 
+    --text-dark: #2a2d24; 
+    --text-red: #d31a20; 
+    --text-green: #839121; 
 }
 
 * {
@@ -14,7 +14,6 @@
 }
 
 body { 
-    /* Używamy czcionki szeryfowej, np. Playfair Display, Lora lub domyślnej serif */
     font-family: 'Lora', 'Times New Roman', serif;
     background-color: var(--bg-color);
     color: var(--text-dark);
@@ -23,7 +22,7 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    position: relative; /* Dla pasków akcentowych */
+    position: relative; 
 }
 
 /* Oliwkowe paski na górze i dole */
@@ -34,16 +33,15 @@ body::before, body::after {
     width: 100%;
     height: 40px;
     background-color: var(--accent-green);
-    border-radius: 20px 20px 0 0; /* Zaokrąglenie w zależności od umiejscowienia */
+    border-radius: 20px 20px 0 0; 
     z-index: 10;
 }
 body::before { top: 0; border-radius: 0 0 20px 20px; }
 body::after { bottom: 0; border-radius: 20px 20px 0 0; }
 
-
 header {
     text-align: center;
-    padding: 70px 20px 20px; /* Odstęp od górnego paska */
+    padding: 70px 20px 20px; 
     z-index: 1;
 }
 
@@ -58,35 +56,62 @@ main {
     flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start; 
     align-items: center;
     width: 100%;
     padding: 20px;
     z-index: 1;
+    position: relative; 
 }
 
-/* Kontener kamery z różową ramką */
-#reader-container {
-    width: 100%;
+/* Wspólne pozycjonowanie, aby kontener kamery i wyników były w tym samym miejscu */
+#reader-container, #result-card {
+    position: absolute;
+    top: 20px; 
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 40px); 
     max-width: 350px;
+}
+
+/* Różowy kontener z powiększonym dolnym paddingiem ("wyjeżdżający" w dół) */
+#reader-container {
     background-color: var(--btn-pink);
     border-radius: 15px;
-    padding: 15px;
+    padding: 15px 15px 120px 15px; 
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
+/* Podgląd kamery z wymuszonymi proporcjami kwadratu */
 #reader {
     width: 100%;
-    background-color: #d1d1c8; /* Szare wnętrze (placeholder kamery) */
+    aspect-ratio: 1 / 1; 
+    height: auto; 
+    background-color: #d1d1c8; 
     border-radius: 10px;
     overflow: hidden;
+    position: relative;
 }
 
+/* Wymuszenie pokrycia całego kwadratu przez wideo */
+#reader video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    border-radius: 10px !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* Ukrycie niechcianych elementów wstrzykiwanych przez bibliotekę */
+#reader img, 
+#reader canvas {
+    display: none !important;
+}
 
 #result-card {
     display: none;
-    width: 100%;
-    max-width: 350px;
     background: var(--card-bg);
     border-radius: 15px;
     padding: 40px 30px;
@@ -107,14 +132,11 @@ main {
     font-size: 1.15rem; 
     line-height: 1.6;
     white-space: pre-line;
-    /* Domyślny kolor dla 'Nie znaleziono' */
     color: var(--text-dark);
 }
 
-/* Klasy dla różnych stanów, zarządzane przez JS */
 .status-cruelty-free #result-text { color: var(--text-green); }
 .status-testing #result-text { color: var(--text-red); }
-
 
 .primary-btn { 
     width: 100%;
@@ -134,18 +156,4 @@ main {
 .primary-btn:active { 
     transform: scale(0.98);
     opacity: 0.9;
-}
-
-/* Wymuszenie ładnego wyglądu wideo z kamery */
-#reader video {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-    border-radius: 10px !important;
-}
-
-/* Ukrycie dodatkowych ramek, które wstrzykuje biblioteka */
-#reader img, 
-#reader canvas {
-    display: none !important;
 }
