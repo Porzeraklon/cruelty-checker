@@ -94,7 +94,7 @@ async def fetch_data_from_apis(barcode: str) -> dict | None:
     async with httpx.AsyncClient() as client:
         for url in api_urls:
             try:
-                response = await client.get(url, timeout=5.0)
+                response = await client.get(url, timeout=15.0)
                 if response.status_code == 200:
                     data = response.json()
                     
